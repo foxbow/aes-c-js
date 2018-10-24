@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <script type="text/javascript" src="../js/ccrypt.js"></script>
+  </head>
+  <body>
+    <h1>crypter</h1>
+    <p>
+    Text:
+    <input id='msg' type='text' value='This is a super secret text!'>
+	</p>
+	<p>
+	Key:
+    <input id='key' type='text' value='password' >
+    </p>
+    <p>
+    Enc:
+    <input id='enc' type='text' value='' >
+    </p>
+    <input type='button' onclick='doenc()' value='enc' >
+    <input type='button' onclick='dodec()' value='dec' >
+    <p id='out'></p>
+  </body>
+</html>
