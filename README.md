@@ -11,4 +11,5 @@ The encrypted output can be decoded in javascript and with the jscdemo utility. 
 
 No warranties, no promises, use at will.
 
-The javascript part is based on https://gist.github.com/chrisveness/43bcda93af9f646d083fad678071b90a by @chrisveness the OpenSSL part is based on the API documentation https://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
+The javascript part is based on https://gist.github.com/chrisveness/43bcda93af9f646d083fad678071b90a by @chrisveness 
+The OpenSSL part is based on the API documentation https://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
