@@ -3,6 +3,35 @@
     <script type="text/javascript" src="../js/ccrypt.js"></script>
   </head>
   <body>
+    <script>
+    async function doenc () {
+      const msg = document.getElementById('msg').value
+      const out = document.getElementById('out')
+      var res
+      try {
+        res = await encryptAES(msg)
+      } catch (err) {
+        window.alert('Encryption failed!')
+        console.log(err)
+        return
+      }
+      out.innerHTML = 'res: ' + res
+    }
+
+    async function dodec () {
+      const enc = document.getElementById('enc').value
+      const out = document.getElementById('out')
+      var res
+      try {
+        res = await decryptAES(enc)
+      } catch (err) {
+        window.alert('Decryption failed!')
+        console.log(err)
+        return
+      }
+      out.innerHTML = 'msg: ' + res
+    }
+    </script>
     <h1>crypter</h1>
     <p>
     Text:

@@ -5,7 +5,7 @@ CFLAGS=-Wall -g
 
 all: demo/jscdemo
 
-demo/jscexample: $(OBJS)
+demo/jscdemo: $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
 %.o: $(SRCDIR)/%.c

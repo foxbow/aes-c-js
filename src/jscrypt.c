@@ -6,11 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <openssl/conf.h>
-#include <openssl/evp.h>
 #include <openssl/err.h>
+#include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <string.h>
 #include <errno.h>
+#include "jscrypt.h"
 
 static void handleErrors(void)
 {
@@ -51,8 +52,10 @@ int jssha256(const char *msg,  unsigned char **digest ) {
 }
 
 /**
- * takes the text in plaintext, encrypts it with the key generated from the
- * and stores the BASE64 encoded stream of IV+crypt in ciphertext.
+ * takes the text in plaintext, encrypts it with the key generated from
+ * passwd and stores the BASE64 encoded stream of IV+crypt in ciphertext.
+ *
+ * returns -1 on error and the length of ciphertext otherwise.
  *
  * since this is just a simple demonstration the key is not buffered
  * and the IV will be generated new on every call. So it is not the
@@ -69,7 +72,7 @@ int jsencryptAES( const char *plaintext, const char *passwd, char **ciphertext )
 	int retval=-1;
 
 	/* initialize the crypto stream with a new IV and add a block to round up */
-	crypto=calloc( plen+32, 1 );
+	crypto=(unsigned char *)calloc( plen+32, 1 );
 	if( crypto == NULL ) {
 		return -1;
 	}
@@ -101,7 +104,7 @@ int jsencryptAES( const char *plaintext, const char *passwd, char **ciphertext )
 	clen += len;
 
 	/* encode the result in BASE64 */
-	*ciphertext=calloc( (clen+16)*2, 1 );
+	*ciphertext=(char *)calloc( (clen+16)*2, 1 );
 	if( *ciphertext == NULL ) {
 		goto cleanup;
 	}
@@ -116,6 +119,18 @@ cleanup:
 	return retval;
 }
 
+/**
+ * takes the BASE64 encoded IV+ciphertext, decrypts it with the key generated
+ * from passwd and stores the text in plaintext.
+ *
+ * returns -1 on error and the length of the original text otherwise.
+ *
+ * since this is just a simple demonstration the key is not buffered
+ * and the IV will be generated new on every call. So it is not the
+ * most performant way but the simples use case.
+ *
+ * error handling is a mess too.
+ */
 int jsdecryptAES( const char *ciphertext, const char *passwd, char **plaintext ) {
 	EVP_CIPHER_CTX *ctx;
 	int len, clen, reslen=-1;
@@ -128,7 +143,7 @@ int jsdecryptAES( const char *ciphertext, const char *passwd, char **plaintext )
 	}
 
   /* buffer to store the binary stream in */
-	crypto=calloc( strlen( ciphertext ), 1 );
+	crypto=(unsigned char *)calloc( strlen( ciphertext ), 1 );
 	if( crypto == NULL ) {
 		return -1;
 	}
@@ -151,7 +166,7 @@ int jsdecryptAES( const char *ciphertext, const char *passwd, char **plaintext )
 	}
 
 	/* allocate room for the plaintext buffer */
-	*plaintext=calloc( clen, 1 );
+	*plaintext=(char *)calloc( clen, 1 );
 	if( *plaintext == NULL ) {
 		goto cleanup;
 	}

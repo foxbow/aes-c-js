@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "jscrypt.h"
 
+/**
+ * simple demo for the jsccrypt functions
+ */
 int main( int argc, char **argv ) {
 	char *res;
 	int len;
@@ -15,7 +18,6 @@ int main( int argc, char **argv ) {
 		printf("Syntax Error!\nReady.\n");
 		return -1;
 	}
-	ERR_load_crypto_strings();
 
 	if( argv[1][1] == 'e' ) {
 		len=jsencryptAES( argv[2], argv[3], &res );
